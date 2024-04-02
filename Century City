@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Map with Device Orientation</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoianJ3MDIzIiwiYSI6ImNsdWlsYm5vdDA1ZHMyaXA1MThobW53N3oifQ._uLaU_ulyW8C1mNgsNGvvA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/jrw023/cktyhwvir0hjx17s5evh9uw98',
+        center: [-118.413620, 34.05514], // Adjust this to center the map appropriately
+        zoom: 12 // Adjust the zoom level as needed
+    });
+
+    var locations = [
+        {lng: -118.413620, lat: 34.055149, description: "Nakatomi Plaza"},
+        {lng: -118.416456, lat: 34.066903, description: "Beverly Hills"},
+    ];
+
+    locations.forEach(function(location) {
+        var marker = new mapboxgl.Marker()
+            .setLngLat([location.lng, location.lat])
+            .addTo(map);
+
+        var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+            location.description
+        );
+
+        marker.setPopup(popup);
+        // Open the popup by default
+        popup.addTo(map);
+    });
+
+    // Attempt to add user's location and orientation
+    map.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true,
+        showUserHeading: true // This attempts to show the direction the user is facing
+    }));
+</script>
+</body>
+</html>
